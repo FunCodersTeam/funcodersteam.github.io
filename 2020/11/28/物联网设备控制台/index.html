@@ -207,7 +207,9 @@
         ajaxObj.send();
         ajaxObj.onreadystatechange = function () {
             if (ajaxObj.readyState == 4 && ajaxObj.status == 200) {        Gauge.Hygrothermograph('main',ajaxObj.responseText.split(',')[0],ajaxObj.responseText.split(',')[1]);
-            }
+            } else {
+  Gauge.Hygrothermograph('main',26,80);
+  }
         }
     }
 </script>
