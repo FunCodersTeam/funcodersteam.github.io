@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="description" content="The official website of our team">
+
+
+    <meta name="keywords" content="AHUT-Geekteam">
+
+
+<title>WebRTC | AHUT-Geekteam</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">欢迎访问本团队官网</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">项目</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/about">关于我们</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">欢迎访问本团队官网</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">项目</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/about">关于我们</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">WebRTC</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">guidons</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">一月 6, 2021&nbsp;&nbsp;09:48:45</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta name="generator" content="Hexo 3.9.0">
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/webrtc-adapter/6.4.0/adapter.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.blockUI/2.70/jquery.blockUI.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.2/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.1.0/bootbox.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+<script type="text/javascript" src="https://janus.conf.meetecho.com/janus.js"></script>
+<script type="text/javascript">
+var server = null;
+if(window.location.protocol === 'http:')
+    server = "https://janus.conf.meetecho.com/janus";
+else
+    server = "https://janus.conf.meetecho.com/janus";
+var janus = null;
+var mixertest = null;
+var opaqueId = "audiobridgetest-"+Janus.randomString(12);
+var spinner = null;
+var myroom = 1234;    // Demo room
+if(getQueryStringValue("room") !== "")
+    myroom = parseInt(getQueryStringValue("room"));
+var myusername = null;
+var myid = null;
+var webrtcUp = false;
+var audioenabled = false;
+$(document).ready(function() {
+    // Initialize the library (all console debuggers enabled)
+    Janus.init({debug: "all", callback: function() {
+        // Use a button to start the demo
+        $('#start').one('click', function() {
+            $(this).attr('disabled', true).unbind('click');
+            // Make sure the browser supports WebRTC
+            if(!Janus.isWebrtcSupported()) {
+                bootbox.alert("No WebRTC support... ");
+                return;
+            }
+            // Create session
+            janus = new Janus(
+                {
+                    server: server,
+                    success: function() {
+                        // Attach to AudioBridge plugin
+                        janus.attach(
+                            {
+                                plugin: "janus.plugin.audiobridge",
+                                opaqueId: opaqueId,
+                                success: function(pluginHandle) {
+                                    $('#details').remove();
+                                    mixertest = pluginHandle;
+                                    Janus.log("Plugin attached! (" + mixertest.getPlugin() + ", id=" + mixertest.getId() + ")");
+                                    // Prepare the username registration
+                                    $('#audiojoin').removeClass('hide').show();
+                                    $('#registernow').removeClass('hide').show();
+                                    $('#register').click(registerUsername);
+                                    $('#username').focus();
+                                    $('#start').removeAttr('disabled').html("Stop")
+                                        .click(function() {
+                                            $(this).attr('disabled', true);
+                                            janus.destroy();
+                                        });
+                                },
+                                error: function(error) {
+                                    Janus.error("  -- Error attaching plugin...", error);
+                                    bootbox.alert("Error attaching plugin... " + error);
+                                },
+                                consentDialog: function(on) {
+                                    Janus.debug("Consent dialog should be " + (on ? "on" : "off") + " now");
+                                    if(on) {
+                                        // Darken screen and show hint
+                                        $.blockUI({
+                                            message: '<div><img src="up_arrow.png"/></div>',
+                                            css: {
+                                                border: 'none',
+                                                padding: '15px',
+                                                backgroundColor: 'transparent',
+                                                color: '#aaa',
+                                                top: '10px',
+                                                left: (navigator.mozGetUserMedia ? '-100px' : '300px')
+                                            } });
+                                    } else {
+                                        // Restore screen
+                                        $.unblockUI();
+                                    }
+                                },
+                                iceState: function(state) {
+                                    Janus.log("ICE state changed to " + state);
+                                },
+                                mediaState: function(medium, on) {
+                                    Janus.log("Janus " + (on ? "started" : "stopped") + " receiving our " + medium);
+                                },
+                                webrtcState: function(on) {
+                                    Janus.log("Janus says our WebRTC PeerConnection is " + (on ? "up" : "down") + " now");
+                                },
+                                onmessage: function(msg, jsep) {
+                                    Janus.debug(" ::: Got a message :::", msg);
+                                    var event = msg["audiobridge"];
+                                    Janus.debug("Event: " + event);
+                                    if(event) {
+                                        if(event === "joined") {
+                                            // Successfully joined, negotiate WebRTC now
+                                            if(msg["id"]) {
+                                                myid = msg["id"];
+                                                Janus.log("Successfully joined room " + msg["room"] + " with ID " + myid);
+                                                if(!webrtcUp) {
+                                                    webrtcUp = true;
+                                                    // Publish our stream
+                                                    mixertest.createOffer(
+                                                        {
+                                                            media: { video: false},    // This is an audio only room
+                                                            success: function(jsep) {
+                                                                Janus.debug("Got SDP!", jsep);
+                                                                var publish = { request: "configure", muted: false };
+                                                                mixertest.send({ message: publish, jsep: jsep });
+                                                            },
+                                                            error: function(error) {
+                                                                Janus.error("WebRTC error:", error);
+                                                                bootbox.alert("WebRTC error... " + error.message);
+                                                            }
+                                                        });
+                                                }
+                                            }
+                                            // Any room participant?
+                                            if(msg["participants"]) {
+                                                var list = msg["participants"];
+                                                Janus.debug("Got a list of participants:", list);
+                                                for(var f in list) {
+                                                    var id = list[f]["id"];
+                                                    var display = list[f]["display"];
+                                                    var setup = list[f]["setup"];
+                                                    var muted = list[f]["muted"];
+                                                    Janus.debug("  >> [" + id + "] " + display + " (setup=" + setup + ", muted=" + muted + ")");
+                                                    if($('#rp'+id).length === 0) {
+                                                        // Add to the participants list
+                                                        $('#list').append('<li id="rp'+id+'" class="list-group-item">'+display+
+                                                            ' <i class="absetup fa fa-chain-broken"></i>' +
+                                                            ' <i class="abmuted fa fa-microphone-slash"></i></li>');
+                                                        $('#rp'+id + ' > i').hide();
+                                                    }
+                                                    if(muted === true || muted === "true")
+                                                        $('#rp'+id + ' > i.abmuted').removeClass('hide').show();
+                                                    else
+                                                        $('#rp'+id + ' > i.abmuted').hide();
+                                                    if(setup === true || setup === "true")
+                                                        $('#rp'+id + ' > i.absetup').hide();
+                                                    else
+                                                        $('#rp'+id + ' > i.absetup').removeClass('hide').show();
+                                                }
+                                            }
+                                        } else if(event === "roomchanged") {
+                                            // The user switched to a different room
+                                            myid = msg["id"];
+                                            Janus.log("Moved to room " + msg["room"] + ", new ID: " + myid);
+                                            // Any room participant?
+                                            $('#list').empty();
+                                            if(msg["participants"]) {
+                                                var list = msg["participants"];
+                                                Janus.debug("Got a list of participants:", list);
+                                                for(var f in list) {
+                                                    var id = list[f]["id"];
+                                                    var display = list[f]["display"];
+                                                    var setup = list[f]["setup"];
+                                                    var muted = list[f]["muted"];
+                                                    Janus.debug("  >> [" + id + "] " + display + " (setup=" + setup + ", muted=" + muted + ")");
+                                                    if($('#rp'+id).length === 0) {
+                                                        // Add to the participants list
+                                                        $('#list').append('<li id="rp'+id+'" class="list-group-item">'+display+
+                                                            ' <i class="absetup fa fa-chain-broken"></i>' +
+                                                            ' <i class="abmuted fa fa-microphone-slash"></i></li>');
+                                                        $('#rp'+id + ' > i').hide();
+                                                    }
+                                                    if(muted === true || muted === "true")
+                                                        $('#rp'+id + ' > i.abmuted').removeClass('hide').show();
+                                                    else
+                                                        $('#rp'+id + ' > i.abmuted').hide();
+                                                    if(setup === true || setup === "true")
+                                                        $('#rp'+id + ' > i.absetup').hide();
+                                                    else
+                                                        $('#rp'+id + ' > i.absetup').removeClass('hide').show();
+                                                }
+                                            }
+                                        } else if(event === "destroyed") {
+                                            // The room has been destroyed
+                                            Janus.warn("The room has been destroyed!");
+                                            bootbox.alert("The room has been destroyed", function() {
+                                                window.location.reload();
+                                            });
+                                        } else if(event === "event") {
+                                            if(msg["participants"]) {
+                                                var list = msg["participants"];
+                                                Janus.debug("Got a list of participants:", list);
+                                                for(var f in list) {
+                                                    var id = list[f]["id"];
+                                                    var display = list[f]["display"];
+                                                    var setup = list[f]["setup"];
+                                                    var muted = list[f]["muted"];
+                                                    Janus.debug("  >> [" + id + "] " + display + " (setup=" + setup + ", muted=" + muted + ")");
+                                                    if($('#rp'+id).length === 0) {
+                                                        // Add to the participants list
+                                                        $('#list').append('<li id="rp'+id+'" class="list-group-item">'+display+
+                                                            ' <i class="absetup fa fa-chain-broken"></i>' +
+                                                            ' <i class="abmuted fa fa-microphone-slash"></i></li>');
+                                                        $('#rp'+id + ' > i').hide();
+                                                    }
+                                                    if(muted === true || muted === "true")
+                                                        $('#rp'+id + ' > i.abmuted').removeClass('hide').show();
+                                                    else
+                                                        $('#rp'+id + ' > i.abmuted').hide();
+                                                    if(setup === true || setup === "true")
+                                                        $('#rp'+id + ' > i.absetup').hide();
+                                                    else
+                                                        $('#rp'+id + ' > i.absetup').removeClass('hide').show();
+                                                }
+                                            } else if(msg["error"]) {
+                                                if(msg["error_code"] === 485) {
+                                                    // This is a "no such room" error: give a more meaningful description
+                                                    bootbox.alert(
+                                                        "<p>Apparently room <code>" + myroom + "</code> (the one this demo uses as a test room) " +
+                                                        "does not exist...</p><p>Do you have an updated <code>janus.plugin.audiobridge.jcfg</code> " +
+                                                        "configuration file? If not, make sure you copy the details of room <code>" + myroom + "</code> " +
+                                                        "from that sample in your current configuration file, then restart Janus and try again."
+                                                    );
+                                                } else {
+                                                    bootbox.alert(msg["error"]);
+                                                }
+                                                return;
+                                            }
+                                            // Any new feed to attach to?
+                                            if(msg["leaving"]) {
+                                                // One of the participants has gone away?
+                                                var leaving = msg["leaving"];
+                                                Janus.log("Participant left: " + leaving + " (we have " + $('#rp'+leaving).length + " elements with ID #rp" +leaving + ")");
+                                                $('#rp'+leaving).remove();
+                                            }
+                                        }
+                                    }
+                                    if(jsep) {
+                                        Janus.debug("Handling SDP as well...", jsep);
+                                        mixertest.handleRemoteJsep({ jsep: jsep });
+                                    }
+                                },
+                                onlocalstream: function(stream) {
+                                    Janus.debug(" ::: Got a local stream :::", stream);
+                                    // We're not going to attach the local audio stream
+                                    $('#audiojoin').hide();
+                                    $('#room').removeClass('hide').show();
+                                    $('#participant').removeClass('hide').html(myusername).show();
+                                },
+                                onremotestream: function(stream) {
+                                    $('#room').removeClass('hide').show();
+                                    var addButtons = false;
+                                    if($('#roomaudio').length === 0) {
+                                        addButtons = true;
+                                        $('#mixedaudio').append('<audio class="rounded centered" id="roomaudio" width="100%" height="100%" autoplay/>');
+                                    }
+                                    Janus.attachMediaStream($('#roomaudio').get(0), stream);
+                                    if(!addButtons)
+                                        return;
+                                    // Mute button
+                                    audioenabled = true;
+                                    $('#toggleaudio').click(
+                                        function() {
+                                            audioenabled = !audioenabled;
+                                            if(audioenabled)
+                                                $('#toggleaudio').html("Mute").removeClass("btn-success").addClass("btn-danger");
+                                            else
+                                                $('#toggleaudio').html("Unmute").removeClass("btn-danger").addClass("btn-success");
+                                            mixertest.send({ message: { request: "configure", muted: !audioenabled }});
+                                        }).removeClass('hide').show();
+                                },
+                                oncleanup: function() {
+                                    webrtcUp = false;
+                                    Janus.log(" ::: Got a cleanup notification :::");
+                                    $('#participant').empty().hide();
+                                    $('#list').empty();
+                                    $('#mixedaudio').empty();
+                                    $('#room').hide();
+                                }
+                            });
+                    },
+                    error: function(error) {
+                        Janus.error(error);
+                        bootbox.alert(error, function() {
+                            window.location.reload();
+                        });
+                    },
+                    destroyed: function() {
+                        window.location.reload();
+                    }
+                });
+        });
+    }});
+});
+function checkEnter(field, event) {
+    var theCode = event.keyCode ? event.keyCode : event.which ? event.which : event.charCode;
+    if(theCode == 13) {
+        registerUsername();
+        return false;
+    } else {
+        return true;
+    }
+}
+function registerUsername() {
+    if($('#username').length === 0) {
+        // Create fields to register
+        $('#register').click(registerUsername);
+        $('#username').focus();
+    } else {
+        // Try a registration
+        $('#username').attr('disabled', true);
+        $('#register').attr('disabled', true).unbind('click');
+        var username = $('#username').val();
+        if(username === "") {
+            $('#you')
+                .removeClass().addClass('label label-warning')
+                .html("Insert your display name (e.g., pippo)");
+            $('#username').removeAttr('disabled');
+            $('#register').removeAttr('disabled').click(registerUsername);
+            return;
+        }
+        if(/[^a-zA-Z0-9]/.test(username)) {
+            $('#you')
+                .removeClass().addClass('label label-warning')
+                .html('Input is not alphanumeric');
+            $('#username').removeAttr('disabled').val("");
+            $('#register').removeAttr('disabled').click(registerUsername);
+            return;
+        }
+        var register = { request: "join", room: myroom, display: username };
+        myusername = username;
+        mixertest.send({ message: register});
+    }
+}
+// Helper to parse query string
+function getQueryStringValue(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+</script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/cerulean/bootstrap.min.css" type="text/css">
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-header">
+                <h1>WebRTC 语音测试
+                    <button class="btn btn-default" autocomplete="off" id="start">启动</button>
+                </h1>
+            </div>
+            <div class="container hide" id="audiojoin">
+                <div class="row">
+                    <span class="label label-info" id="you"></span>
+                    <div class="col-md-12" id="controls">
+                        <div class="input-group margin-bottom-md hide" id="registernow">
+                            <input class="form-control" type="text" placeholder="请输入你的用户ID" autocomplete="off" id="username" onkeypress="return checkEnter(this, event);">
+                            <span class="input-group-btn">
+                                <button class="btn btn-success" autocomplete="off" id="register">加入房间</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="container hide" id="room">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">用户 <span class="label label-info hide" id="participant"></span>
+                                <button class="btn-xs btn-danger hide pull-right" autocomplete="off" id="toggleaudio">静音</button></h3>
+                            </div>
+                            <div class="panel-body">
+                                <ul id="list" class="list-group">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">音频流</h3>
+                            </div>
+                            <div class="panel-body" id="mixedaudio"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="footer">
+    </div>
+</div>
+</body>
+</html>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>guidons</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2020/11/28/物联网设备控制台/">物联网设备控制台</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© guidons | 由<a href="https://github.com/AHUT-GeekTeam" target="_blank">AHUT-GeekTeam</a>强力驱动</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
