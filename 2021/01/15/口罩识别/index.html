@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh">
-<head><meta name="generator" content="Hexo 3.9.0">
+<head>
     <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <meta name="description" content="The official website of our team">
@@ -11,7 +12,7 @@
     <meta name="keywords" content="AHUT-Geekteam">
 
 
-<title>人脸识别demo | AHUT-Geekteam</title>
+<title>口罩识别 | AHUT-Geekteam</title>
 
 
 
@@ -103,73 +104,11 @@
             <div class="container">
     
     
-        <div class="post-toc">
-    <div class="tocbot-list">
-    </div>
-    <div class="tocbot-list-menu">
-        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
-        <a onclick="go_top()">Back to top</a>
-        <a onclick="go_bottom()">Go to bottom</a>
-    </div>
-</div>
-
-<script>
-    document.ready(
-        function () {
-            tocbot.init({
-                tocSelector: '.tocbot-list',
-                contentSelector: '.post-content',
-                headingSelector: 'h1, h2, h3, h4, h5',
-                collapseDepth: 1,
-                orderedList: false,
-                scrollSmooth: true,
-            })
-        }
-    )
-
-    function expand_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 6,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "collapse_toc()");
-        b.innerHTML = "Collapse all"
-    }
-
-    function collapse_toc() {
-        var b = document.querySelector(".tocbot-toc-expand");
-        tocbot.init({
-            tocSelector: '.tocbot-list',
-            contentSelector: '.post-content',
-            headingSelector: 'h1, h2, h3, h4, h5',
-            collapseDepth: 1,
-            orderedList: false,
-            scrollSmooth: true,
-        });
-        b.setAttribute("onclick", "expand_toc()");
-        b.innerHTML = "Expand all"
-    }
-
-    function go_top() {
-        window.scrollTo(0, 0);
-    }
-
-    function go_bottom() {
-        window.scrollTo(0, document.body.scrollHeight);
-    }
-
-</script>
-    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">人脸识别demo</h1>
+            <h1 class="post-title">口罩识别</h1>
             
                 <div class="post-meta">
                     
@@ -178,51 +117,68 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">十月 21, 2019&nbsp;&nbsp;22:50:06</a>
+                        Date: <a href="#">一月 15, 2021&nbsp;&nbsp;21:02:07</a>
                         </span>
                     
-                    
-                        <span class="post-category">
-                    Category:
-                            
-                                <a href="/categories/图像处理/">图像处理</a>
-                            
-                        </span>
                     
                 </div>
             
         </header>
 
         <div class="post-content">
-            <h3 id="1-简介"><a href="#1-简介" class="headerlink" title="1.简介"></a>1.简介</h3><p>使用百度的人脸识别API在实时视频流中完成人脸识别，拥有活体检测功能和较高的准确度。</p>
-<h3 id="2-依赖项"><a href="#2-依赖项" class="headerlink" title="2.依赖项"></a>2.依赖项</h3><ul>
-<li>opencv</li>
-<li>baidu-aip</li>
-</ul>
-<h3 id="3-如何运行"><a href="#3-如何运行" class="headerlink" title="3.如何运行"></a>3.如何运行</h3><blockquote>
-<p>脚本配置</p>
-</blockquote>
-<p>填写以下字段</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">APP_ID = &apos;******&apos;</span><br><span class="line">API_KEY = &apos;******&apos;</span><br><span class="line">SECRET_KEY = &apos;******&apos;</span><br><span class="line">groupIdList = &apos;******&apos;</span><br></pre></td></tr></table></figure>
-
-<p>如何获取请参考</p>
-<p><img src="/images/demo_1.png" alt></p>
-<p><img src="/images/demo_2.png" alt></p>
-<p>括号中填写要获取的视频流地址，若为0表示使用内置摄像头</p>
-<p><code>video = cv2.VideoCapture(0)</code></p>
-<blockquote>
-<p>安装依赖项</p>
-</blockquote>
-<p><code>pip3 install baidu-aip &amp;&amp; pip3 install opencv-python</code></p>
-<blockquote>
-<p>运行</p>
-</blockquote>
-<p><code>sudo python3 demo.py</code></p>
-<blockquote>
-<p>效果</p>
-</blockquote>
-<p><img src="/images/debug.png" alt></p>
-
+            <html>
+<head><meta name="generator" content="Hexo 3.9.0"> 
+<meta charset="utf-8"> 
+</head>
+<body>
+<center>
+<button type="button" onclick="init()">开始检测</button>
+<div id="webcam-container"></div>
+<div id="label-container"></div>
+<center>
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.3.1/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    const URL = "http://localhost:4000/model/";
+    let model, webcam, labelContainer, maxPredictions, flag = 0;
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+        const flip = true; // whether to flip the webcam
+        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+        // append elements to the DOM
+        if (document.getElementById("webcam-container").childNodes.length){
+       document.getElementById("webcam-container").removeChild(document.getElementById("webcam-container").childNodes[0]);
+  }
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        labelContainer = document.getElementById("label-container");
+        for (let i = 0; i < maxPredictions; i++) { // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+    }
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+    // run the webcam image through the image model
+    async function predict() {
+        // predict can take in an image, video or canvas html element
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction =
+                prediction[i].className + ": " + prediction[i].probability.toFixed(2);
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+        }
+    }
+</script>
+</center></center></body>
+</html>
         </div>
 
         
@@ -259,10 +215,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/2020/11/23/马保国/">马保国</a>
             
-            
-            <a class="next" rel="next" href="/2019/09/01/实验室实时监控/">摄像头测试</a>
+            <a class="next" rel="next" href="/2021/01/06/WebRTC/">WebRTC</a>
             
         </section>
 
