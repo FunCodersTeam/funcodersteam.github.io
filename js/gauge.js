@@ -1,5 +1,4 @@
-
-var Gauge = {}; 
+var Gauge = {};
 Gauge.ChartList = {};     
 /**
  * 生成温湿计图表 

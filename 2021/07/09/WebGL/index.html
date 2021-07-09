@@ -1,210 +1,183 @@
-<html>
-	<head>
-		<meta charset="utf-8">
-		<title>My first three.js app</title>
-		<style type="text/css">
-			body { margin: 0; }
-			#blocker {
-				position: absolute;
-				width: 100%;
-				height: 100%;
-				background-color: rgba(0,0,0,0.5);
-        	}
-			#instructions {
-				width: 100%;
-				height: 100%;
-				display: -webkit-box;
-				display: -moz-box;
-				display: box;
-				-webkit-box-orient: horizontal;
-				-moz-box-orient: horizontal;
-				box-orient: horizontal;
-				-webkit-box-pack: center;
-				-moz-box-pack: center;
-				box-pack: center;
-				-webkit-box-align: center;
-				-moz-box-align: center;
-				box-align: center;
-				color: #ffffff;
-				text-align: center;
-				cursor: pointer;
-			}
-		</style>
-		<script src="/js/three.min.js"></script>
-		<script src="/js/PointerLockControls.js"></script>
-		<!--<script src="http://www.yanhuangxueyuan.com/threejs/examples/js/controls/OrbitControls.js"></script>-->
-	</head>
-	<body>
-		<div id="blocker">
-			<div id="instructions">
-				<span style="font-size:40px">点击屏幕开始</span>
-				<br />
-				<br />
-				(W, A, S, D = 移动, MOUSE = 移动视角)
-			</div>
-		</div>
-		<script type="text/javascript">
-			// 场景
-			const scene = new THREE.Scene();
-			scene.background = new THREE.Color( 0xaaccff );
-			// 透视相机
-			const camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1000 );
-			camera.position.set(0,10,0);
-			// 渲染器
-			const renderer = new THREE.WebGLRenderer();
-			renderer.setSize( window.innerWidth, window.innerHeight );
-			document.body.appendChild( renderer.domElement );
-			// 平面
-			const geometry = new THREE.PlaneGeometry( 1200, 500);
-			geometry.rotateX( - Math.PI / 2 );
-			// 图片加载器
-			var ImageLoader = new THREE.ImageLoader();
-			// load方法回调函数，按照路径加载图片，返回一个html的元素img对象
-			ImageLoader.load('./test.bmp', function(img) {
-			// image对象作为参数，创建一个纹理对象Texture
-			var texture = new THREE.Texture(img);
-			// 下次使用纹理时触发更新
-			texture.needsUpdate = true;
-			var material = new THREE.MeshBasicMaterial({
-				map: texture, //设置纹理贴图
-			});
-			var mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
-			scene.add(mesh); //网格模型添加到场景中
-			});
-			// 灯光
-			// var light = new THREE.AmbientLight( 0xffffff );
-			// scene.add( light );
-			// 坐标辅助
-			const axisHelper = new THREE.AxesHelper(97);
-			scene.add(axisHelper);
-			// 浏览器自适应
-			window.addEventListener( 'resize', onWindowResize );
-			function onWindowResize() {
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-				renderer.setSize( window.innerWidth, window.innerHeight );
-			}
-			// FPS工具
-			const Stats=function(){function h(a){c.appendChild(a.dom);return a}function k(a){for(var d=0;d<c.children.length;d++)c.children[d].style.display=d===a?"block":"none";l=a}var l=0,c=document.createElement("div");c.style.cssText="position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";c.addEventListener("click",function(a){a.preventDefault();k(++l%c.children.length)},!1);var g=(performance||Date).now(),e=g,a=0,r=h(new Stats.Panel("FPS","#0ff","#002")),f=h(new Stats.Panel("MS","#0f0","#020"));
-			if(self.performance&&self.performance.memory)var t=h(new Stats.Panel("MB","#f08","#201"));k(0);return{REVISION:16,dom:c,addPanel:h,showPanel:k,begin:function(){g=(performance||Date).now()},end:function(){a++;var c=(performance||Date).now();f.update(c-g,200);if(c>e+1E3&&(r.update(1E3*a/(c-e),100),e=c,a=0,t)){var d=performance.memory;t.update(d.usedJSHeapSize/1048576,d.jsHeapSizeLimit/1048576)}return c},update:function(){g=this.end()},domElement:c,setMode:k}};
-			Stats.Panel=function(h,k,l){var c=Infinity,g=0,e=Math.round,a=e(window.devicePixelRatio||1),r=80*a,f=48*a,t=3*a,u=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=f;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,f);b.fillStyle=k;b.fillText(h,t,u);b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(f,
-			v){c=Math.min(c,f);g=Math.max(g,f);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=k;b.fillText(e(f)+" "+h+" ("+e(c)+"-"+e(g)+")",t,u);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,e((1-f/v)*p))}}};"object"===typeof module&&(module.exports=Stats);
-			const stats = new Stats();
-			document.body.appendChild(stats.dom);
-			// 鼠标锁定
-			var controlsEnabled = false;
-			var blocker = document.getElementById( 'blocker' );
-    		var instructions = document.getElementById( 'instructions' );
-			var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
-			if ( havePointerLock ) {
-				var element = document.body;
-				var pointerlockchange = function ( event ) {
-					if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
-						controlsEnabled = true;
-						controls.enabled = true;
-						blocker.style.display = 'none';
-					} else {
-						controls.enabled = false;
-						blocker.style.display = 'block';
-						instructions.style.display = '';
-					}
-				};
-				var pointerlockerror = function ( event ) {
-					instructions.style.display = '';
-				};
-				// 监听变动事件
-				document.addEventListener( 'pointerlockchange', pointerlockchange, false );
-				document.addEventListener( 'mozpointerlockchange', pointerlockchange, false );
-				document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false );
-				document.addEventListener( 'pointerlockerror', pointerlockerror, false );
-				document.addEventListener( 'mozpointerlockerror', pointerlockerror, false );
-				document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false );
-				instructions.addEventListener( 'click', function ( event ) {
-					instructions.style.display = 'none';
-					element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-					element.requestPointerLock();
-				}, false );
-			}
-			else {
-				instructions.innerHTML = '你的浏览器不支持相关操作，请使用Chrome浏览器';
-			}
-			// 控制
-			var clock = new THREE.Clock();
-			var velocity = new THREE.Vector3(); //移动速度变量
-    		var direction = new THREE.Vector3(); //移动的方向变量
-			var moveForward = false;
-			var moveBackward = false;
-    		var moveLeft = false;
-    		var moveRight = false;
-			const controls = new THREE.PointerLockControls( camera );
-			controls.getObject().position.y = 5;
-			scene.add( controls.getObject() );
-			var onKeyDown = function ( event ) {
-				switch ( event.keyCode ) {
-					case 38: // up
-					case 87: // w
-						moveForward = true;
-						break;
-					case 37: // left
-					case 65: // a
-						moveLeft = true; break;
-					case 40: // down
-					case 83: // s
-						moveBackward = true;
-						break;
-					case 39: // right
-					case 68: // d
-						moveRight = true;
-						break;
-				}
-			};
-			var onKeyUp = function ( event ) {
-				switch( event.keyCode ) {
-					case 38: // up
-					case 87: // w
-						moveForward = false;
-						break;
-					case 37: // left
-					case 65: // a
-						moveLeft = false;
-						break;
-					case 40: // down
-					case 83: // s
-						moveBackward = false;
-						break;
-					case 39: // right
-					case 68: // d
-						moveRight = false;
-						break;
-				}
-			};
-			document.addEventListener( 'keydown', onKeyDown, false );
-			document.addEventListener( 'keyup', onKeyUp, false );
-			// 循环渲染
-			function render() {
-				stats.update();
-				if ( controlsEnabled === true ) {
-					var control = controls.getObject();
-					var delta = clock.getDelta();
-					velocity.x -= velocity.x * 10.0 * delta;
-					velocity.z -= velocity.z * 10.0 * delta;
-					direction.z = Number( moveForward ) - Number( moveBackward );
-					direction.x = Number( moveLeft ) - Number( moveRight );
-					if ( moveForward || moveBackward ) velocity.z -= direction.z * 200 * delta;
-					if ( moveLeft || moveRight ) velocity.x -= direction.x * 200 * delta;
-					control.translateX( velocity.x * delta );
-					control.translateY( velocity.y * delta );
-					control.translateZ( velocity.z * delta );
-					//保证控制器的y轴在10以上
-					if ( control.position.y < 5 ) {
-						velocity.y = 0;
-						control.position.y = 5;
-					}
-				}
-				renderer.render(scene,camera);
-  				requestAnimationFrame(render);
-			}
-			render();
-		</script>
-	</body>
+<!DOCTYPE html>
+<html lang="zh">
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="description" content="The official website of our team">
+
+
+    <meta name="keywords" content="AHUT-Geekteam">
+
+
+<title>WebGL | AHUT-Geekteam</title>
+
+
+
+    <link rel="icon" href="/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">欢迎访问本团队官网</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">项目</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/about">关于我们</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">欢迎访问本团队官网</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">项目</a>
+                
+                    <a class="menu-item" href="/category">分类</a>
+                
+                    <a class="menu-item" href="/about">关于我们</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">WebGL</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">guidons</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">七月 9, 2021&nbsp;&nbsp;23:25:00</a>
+                        </span>
+                    
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <iframe src="/WebGL.html"></iframe>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>guidons</span>
+                    </p>
+                
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/2021/01/15/口罩识别/">口罩识别</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>© guidons | 由<a href="https://github.com/AHUT-GeekTeam" target="_blank">AHUT-GeekTeam</a>强力驱动</span>
+    </div>
+</footer>
+
+    </div>
+</body>
 </html>
