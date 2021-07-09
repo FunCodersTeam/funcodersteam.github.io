@@ -30,8 +30,8 @@
 				cursor: pointer;
 			}
 		</style>
-		<script src="http://www.yanhuangxueyuan.com/threejs/build/three.min.js"></script>
-		<script src="http://www.yanhuangxueyuan.com/threejs/examples/js/controls/PointerLockControls.js"></script>
+		<script src="/js/three.min.js"></script>
+		<script src="/js/PointerLockControls.js"></script>
 		<!--<script src="http://www.yanhuangxueyuan.com/threejs/examples/js/controls/OrbitControls.js"></script>-->
 	</head>
 	<body>
@@ -60,7 +60,7 @@
 			// 图片加载器
 			var ImageLoader = new THREE.ImageLoader();
 			// load方法回调函数，按照路径加载图片，返回一个html的元素img对象
-			ImageLoader.load('test.bmp', function(img) {
+			ImageLoader.load('./test.bmp', function(img) {
 			// image对象作为参数，创建一个纹理对象Texture
 			var texture = new THREE.Texture(img);
 			// 下次使用纹理时触发更新
